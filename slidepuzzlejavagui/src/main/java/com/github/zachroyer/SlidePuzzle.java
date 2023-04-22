@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Window;
@@ -28,6 +30,7 @@ public class SlidePuzzle implements ActionListener {
                 window.add(buttons[i]);
                 buttons[i].setFont(new Font("Arial", Font.PLAIN, 40));
                 grid.add(i);
+                buttons[i].addActionListener(this);
             } else {
                 buttons[i] = new JButton();
                 window.add(buttons[i]);
@@ -39,10 +42,21 @@ public class SlidePuzzle implements ActionListener {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         System.out.println(grid.toString());
+        System.out.println(buttons.toString());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        (e.getSource());
+        swap(e.getSource(), )
+        // System.out.println("Button" + JButton.indexOf(this) + "clicked");
+
+    }
+
+    private void swap(JButton buttonOne, JButton buttonTwo) {
+        Container temp = buttonOne.getParent();
+        Container temp2 = buttonTwo.getParent();
+        temp.setComponentZOrder(temp, buttonOne.);
 
     }
 }
