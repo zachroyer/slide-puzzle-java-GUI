@@ -30,7 +30,9 @@ public class SlidePuzzle implements ActionListener {
         buttons = new ArrayList<>(9);
 
         for (int i = 0; i < 9; i++) {
+            int button = i;
             if (i != 8) {
+                
                 buttons.add(i, new JButton(String.valueOf(i + 1)));
                 window.add(buttons.get(i));
                 buttons.get(i).setFont(new Font("Arial", Font.PLAIN, 40));
@@ -69,12 +71,19 @@ public class SlidePuzzle implements ActionListener {
             return false;
         }
     }
+
+/*
+ * Currently, the swap method only swaps two of the buttons, and the rest are not swappable
+ * Possible issue with how the buttonClicked and emptyButton variables are being handled
+ */
     private void swap(JButton buttonOne, JButton buttonTwo) {
-        Component temp = buttonOne.getParent();
-        Container temp2 = buttonTwo.getParent();
-        window.setComponentZOrder(buttonOne, buttons.indexOf(temp2)); // This was tough to figure out
-        window.setComponentZOrder(buttonTwo, buttons.indexOf(temp));
-        window.repaint();
+        Container parent = buttonOne.getParent(); //Apparently the window JFrame is not the parent to the JButtons
+        int indexOne = parent.getComponentZOrder(buttonOne);
+        int indexTwo = parent.getComponentZOrder(buttonTwo);
+        parent.setComponentZOrder(buttonOne, indexTwo); // This was tough to research
+        parent.setComponentZOrder(buttonTwo, indexOne);
+        parent.validate();
+        parent.repaint();
 
     }
 }
