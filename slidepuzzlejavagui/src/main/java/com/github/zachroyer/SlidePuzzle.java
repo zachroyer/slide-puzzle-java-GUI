@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -30,37 +28,48 @@ public class SlidePuzzle implements ActionListener {
         buttons = new ArrayList<>(9);
 
         for (int i = 0; i < 9; i++) {
-            int button = i;
             if (i != 8) {
-                
+
                 buttons.add(i, new JButton(String.valueOf(i + 1)));
                 window.add(buttons.get(i));
                 buttons.get(i).setFont(new Font("Arial", Font.PLAIN, 40));
                 buttons.get(i).addActionListener(this);
 
             } else {
-                emptyButton = new JButton();
-                buttons.add(i, emptyButton);
-                window.add(emptyButton);
+                buttons.add(i, new JButton());
+                window.add(buttons.get(i));
 
+            }
+        }
+
+        for (JButton jButton : buttons) {
+            if (jButton.getText().isEmpty()) {
+                emptyButton = jButton;
             }
         }
 
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton buttonClicked = (JButton) (e.getSource()); // JButton object, type cast of the button source from ActionListener
-        int clickedIndex = buttons.indexOf(buttonClicked);  
-        int emptyIndex = buttons.indexOf(emptyButton);  //grabbing indexes of clicked and empty buttons
+        JButton buttonClicked = (JButton) (e.getSource()); // JButton object, typecast of the button source from
+        // ActionListener
+        int clickedIndex = buttons.indexOf(buttonClicked);
+        int emptyIndex = buttons.indexOf(emptyButton); // grabbing indexes of clickedand empty buttons
 
         if (isValidSwap(clickedIndex, emptyIndex)) {
             swap(buttonClicked, emptyButton);
-        }
+            emptyButton = buttonClicked;
 
+            for (JButton jButton : buttons) {
+                if (jButton.getText().isEmpty()) {
+                    emptyButton = jButton;
+                    break;
+                }
+            }
+        }
     }
 
     private boolean isValidSwap(int clickedIndex, int emptyIndex) {
@@ -72,18 +81,18 @@ public class SlidePuzzle implements ActionListener {
         }
     }
 
-/*
- * Currently, the swap method only swaps two of the buttons, and the rest are not swappable
- * Possible issue with how the buttonClicked and emptyButton variables are being handled
- */
     private void swap(JButton buttonOne, JButton buttonTwo) {
-        Container parent = buttonOne.getParent(); //Apparently the window JFrame is not the parent to the JButtons
+        Container parent = buttonOne.getParent(); // Apparently the window JFrame is not the parent to the JButtons
         int indexOne = parent.getComponentZOrder(buttonOne);
         int indexTwo = parent.getComponentZOrder(buttonTwo);
         parent.setComponentZOrder(buttonOne, indexTwo); // This was tough to research
         parent.setComponentZOrder(buttonTwo, indexOne);
         parent.validate();
         parent.repaint();
+        System.out.println("swapped " + buttonOne.getText() + " with " + buttonTwo.getText());
 
+        // Update the buttons Array
+        buttons.set(indexOne, buttonTwo);
+        buttons.set(indexTwo, buttonOne);
     }
 }
