@@ -1,2 +1,2 @@
 # slide-puzzle-java-GUI
-A very simple GUI slide puzzle developed in Java. 
+A very simple slide puzzle game using Java Swing components
