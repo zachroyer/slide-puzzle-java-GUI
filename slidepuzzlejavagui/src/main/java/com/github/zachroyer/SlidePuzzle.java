@@ -25,22 +25,20 @@ public class SlidePuzzle implements ActionListener {
         window.setSize(400, 400);
         window.setLocationRelativeTo(null);
 
+        String[] initialValues = { "2", "3", "5", "1", "4", "8", "7", "6", "" };
+
         buttons = new ArrayList<>(9);
-
         for (int i = 0; i < 9; i++) {
-            if (i != 8) {
-
-                buttons.add(i, new JButton(String.valueOf(i + 1)));
-                window.add(buttons.get(i));
-                buttons.get(i).setFont(new Font("Arial", Font.PLAIN, 40));
-                buttons.get(i).addActionListener(this);
-
-            } else {
-                buttons.add(i, new JButton());
-                window.add(buttons.get(i));
-
-            }
+        JButton button = new JButton(initialValues[i]);
+        if (initialValues[i].isEmpty()) {
+            emptyButton = button;
+        } else {
+            button.setFont(new Font("Arial", Font.PLAIN, 40));
+            button.addActionListener(this);
         }
+        buttons.add(button);
+        window.add(button);
+    }
 
         for (JButton jButton : buttons) {
             if (jButton.getText().isEmpty()) {
